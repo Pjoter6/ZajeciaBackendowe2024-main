@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{{ hello_message }}
+
+{% comment "Some changes" %}
+<h1> {{ date_created }} </h1>
+
+{% for autor in autors %}
+    <h2> {{ autor }} </h2>
+{% endfor %}
+{% endcomment %}
+
+{% comment "Not visible" %}
+    {% for group in user.groups.all %}
+        <p>{{ group }}</p>
+    {% endfor %}
+{% endcomment %}
+
+{% endblock %}

@@ -1,0 +1,114 @@
+{% load static %}
+
+<html {% if LANGUAGE_CODE %}lang="{{ LANGUAGE_CODE }}"{% endif %}>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HollyMovies</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+    {% comment "TODO: work on static content" %}
+    {% endcomment %}
+  </head>
+
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container fixed">
+        <a class="navbar-brand" href="{% url 'index' %}">
+          HollyMovies
+        </a>
+        <button
+          class="navbar-toggler" type="button"
+          data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="{% url 'movies' %}">
+              Movies
+            </a>
+            <a class="nav-item nav-link active" href="{% url 'genres' %}">
+              Genres
+            </a>
+            <a class="nav-item nav-link active" href="{% url 'actors' %}">
+              Actors
+            </a>
+            <a class="nav-item nav-link active" href="{% url 'movie_selection' %}">
+              Select Movie
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+        <div class="navbar-nav ml-auto">
+          <div class="nav-item dropdown">
+            {% if user.is_authenticated %}
+            <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+              {% if user.first_name %}Hello, {{ user.first_name }}!
+              {% else %}Hello, {{ user.username }}!{% endif %}
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-right">
+                <div style="text-align: center;">
+                  <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                    {% comment "TODO: make this widget submit for" %}
+                      <a class="dropdown-item text-right" href="{% url 'logout' %}">Logout</a>
+                    {% endcomment %}
+                  </form>
+                </div>
+              <a class="dropdown-item text-right" href="{% url 'password_change' %}">Change password</a>
+            </div>
+
+            {% else %}
+            <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+              You are not logged in.
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <a class="dropdown-item text-right" href="{% url 'login' %}">Login</a>
+              <a class="dropdown-item text-right" href="{% url 'sign_up' %}">Sign Up</a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row flex-nowrap">
+        <div class="col-auto col-md-4 col-xl-2 px-sm-2 px-0 bg-dark">
+          <div class="d-flex flex-column align-items-center align-items-sm-start px-4 pt-2 text-white min-vh-100">
+            <ul class="nav nav-pills flex-column mb-sm-auto mb-1 align-items-center align-items-sm-start" id="menu">
+              <li class="nav-item">
+                <a href="/admin/" class="nav-link align-middle px-1">
+                  <i class="fs-5 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Admin</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+    <div class="container">
+      <div class="jumbotron">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+
+    <footer class="bg-body-tertiary text-center text-lg-start mt-auto">
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.20);">
+        {% comment "Turn off copyright" %}
+        <p style="font-family: monospace;">© 2024: Copyright Maciej Oliwa</p>
+        <p style="font-family: monospace;">{{ date_created }}</p>
+        {% endcomment %}
+        <p style="font-family: cursive;">{{ ciekawostka }}</p>
+        <p>{{ current_time_and_date }} Ilosc aktorow w bazie: {{ num_of_actors }}. Ilosc filmow w bazie: {{ num_of_movies }}.</p>
+      </div>
+    </footer>
+  </body>
+</html>
